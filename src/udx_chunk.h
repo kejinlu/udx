@@ -41,17 +41,17 @@ void udx_chunk_writer_destroy(udx_chunk_writer *writer);
  * Add a data block to the chunk writer
  * @param writer Writer pointer
  * @param data Data pointer
- * @param size Data size
+ * @param size Data size (maximum: 4 GB)
  * @return Data block address (encoded address), or UDX_INVALID_ADDRESS on failure
  *
  * @note If the current chunk has insufficient space, it will be flushed
  *       and the block will be written to a new chunk.
- *       Blocks larger than UDX_CHUNK_MAX_SIZE are allowed and will
+ *       Blocks larger than UDX_CHUNK_MAX_SIZE (64KB) are allowed and will
  *       occupy a dedicated chunk.
  */
 udx_chunk_address udx_chunk_writer_add_block(udx_chunk_writer *writer,
                                               const uint8_t *data,
-                                              size_t size);
+                                              uint32_t size);
 
 /**
  * Finish writing and write the chunk offset table

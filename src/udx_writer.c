@@ -677,16 +677,13 @@ cleanup:
 udx_error_t udx_db_builder_add_entry(udx_db_builder *builder,
                            const char *word,
                            const uint8_t *data,
-                           size_t data_size) {
+                           uint32_t data_size) {
     if (builder == NULL || word == NULL || data == NULL) {
-        return UDX_ERR_INVALID_PARAM;
-    }
-    if (data_size > UINT32_MAX) {
         return UDX_ERR_INVALID_PARAM;
     }
 
     udx_chunk_address address = udx_chunk_writer_add_block(builder->chunk_writer, data, data_size);
     if (address == UDX_INVALID_ADDRESS) return UDX_ERR_CHUNK;
 
-    return udx_words_add(builder->words, word, address, (uint32_t)data_size) ? UDX_OK : UDX_ERR_WORDS;
+    return udx_words_add(builder->words, word, address, data_size) ? UDX_OK : UDX_ERR_WORDS;
 }

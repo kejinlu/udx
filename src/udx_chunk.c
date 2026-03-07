@@ -17,15 +17,15 @@
 // ============================================================
 
 // Make address from chunk_index and offset
-// chunk_index: 48-bit (0-281 trillion), max 281TB
+// chunk_index: 32-bit (0-4.29 billion), max 256 TB with 64KB chunks
 // offset: 16-bit (0-65535), max 64KB per chunk
-static inline udx_chunk_address udx_addr_make(uint64_t chunk_index, uint16_t offset) {
-    return (chunk_index << 16) | offset;
+static inline udx_chunk_address udx_addr_make(uint32_t chunk_index, uint16_t offset) {
+    return ((uint64_t)chunk_index << 16) | offset;
 }
 
 // Get chunk_index from address
-static inline uint64_t udx_addr_get_chunk(udx_chunk_address addr) {
-    return addr >> 16;
+static inline uint32_t udx_addr_get_chunk(udx_chunk_address addr) {
+    return (uint32_t)(addr >> 16);
 }
 
 // Get offset from address (same for both formats)
@@ -41,14 +41,14 @@ struct udx_chunk_writer {
     FILE *file;                     // Output file
 
     uint8_t *buffer;                // Current chunk buffer
-    size_t buffer_size;             // Buffer used size
-    size_t buffer_capacity;         // Buffer capacity
+    uint32_t buffer_size;           // Buffer used size
+    uint32_t buffer_capacity;       // Buffer capacity
 
     uint64_t *offsets;              // Chunk offset table
-    size_t offset_count;            // Offset count
-    size_t offset_capacity;         // Offset table capacity
+    uint32_t offset_count;          // Number of saved chunks
+    uint32_t offset_capacity;       // Offset table capacity
 
-    uint64_t current_chunk_index;   // Current chunk index
+    uint32_t current_chunk_index;   // Index of the next chunk to write (32-bit limit, max 256 TB with 64KB chunks)
 };
 
 /**
@@ -67,7 +67,26 @@ static bool chunk_writer_save_current(udx_chunk_writer *writer) {
 
     // Expand offset table (reserve space, but don't commit yet)
     if (writer->offset_count >= writer->offset_capacity) {
-        size_t new_capacity = writer->offset_capacity == 0 ? 64 : writer->offset_capacity * 2;
+        // Calculate new capacity with overflow check
+        uint32_t new_capacity;
+        if (writer->offset_capacity == 0) {
+            new_capacity = 64;
+        } else {
+            // Check multiplication overflow before doing it
+            if (writer->offset_capacity > UINT32_MAX / 2) {
+                return false;
+            }
+            new_capacity = writer->offset_capacity * 2;
+        }
+
+        // Check if sizeof(uint64_t) * new_capacity would overflow size_t
+        // Only relevant on 32-bit systems where size_t is 32 bits
+#if UINTPTR_MAX == 0xFFFFFFFF
+        if (new_capacity > SIZE_MAX / sizeof(uint64_t)) {
+            return false;
+        }
+#endif
+
         uint64_t *new_offsets = (uint64_t *)realloc(writer->offsets,
                                                      sizeof(uint64_t) * new_capacity);
         if (new_offsets == NULL) {
@@ -111,6 +130,11 @@ static bool chunk_writer_save_current(udx_chunk_writer *writer) {
 
     // Reset buffer
     writer->buffer_size = 0;
+
+    // Check 32-bit chunk index limit
+    if (writer->current_chunk_index >= UINT32_MAX) {
+        return false;  // Would overflow 32-bit limit
+    }
     writer->current_chunk_index++;
 
     return true;
@@ -149,9 +173,14 @@ void udx_chunk_writer_destroy(udx_chunk_writer *writer) {
 
 udx_chunk_address udx_chunk_writer_add_block(udx_chunk_writer *writer,
                                               const uint8_t *data,
-                                              size_t size) {
+                                              uint32_t size) {
     if (writer == NULL || data == NULL || size == 0) {
         return UDX_INVALID_ADDRESS;
+    }
+
+    // Check for addition overflow before calculation
+    if (size > UINT32_MAX - writer->buffer_size) {
+        return UDX_INVALID_ADDRESS;  // buffer_size + size would overflow uint32
     }
 
     // Flush if current offset would exceed uint16 range
@@ -162,7 +191,7 @@ udx_chunk_address udx_chunk_writer_add_block(udx_chunk_writer *writer,
     }
 
     // Expand buffer if needed (for blocks larger than default capacity)
-    size_t required = writer->buffer_size + size;
+    uint32_t required = writer->buffer_size + size;
     if (required > writer->buffer_capacity) {
         uint8_t *new_buffer = (uint8_t *)realloc(writer->buffer, required);
         if (new_buffer == NULL) {
@@ -173,6 +202,7 @@ udx_chunk_address udx_chunk_writer_add_block(udx_chunk_writer *writer,
     }
 
     // Record address before appending
+    // buffer_size is guaranteed < UDX_CHUNK_MAX_SIZE after flush check
     udx_chunk_address address = udx_addr_make(writer->current_chunk_index,
                                                (uint16_t)writer->buffer_size);
 
@@ -202,7 +232,7 @@ uint64_t udx_chunk_writer_finish(udx_chunk_writer *writer) {
     }
 
     // Write chunk table: [count:u64] [offset_0:u64] [offset_1:u64] ...
-    uint64_t count = (uint64_t)writer->offset_count;
+    uint64_t count = writer->offset_count;
     if (fwrite(&count, sizeof(uint64_t), 1, writer->file) != 1) {
         return 0;
     }
@@ -227,7 +257,7 @@ struct udx_chunk_reader {
 
     // Cache for the most recently read chunk
     uint8_t *cached_data;       // Decompressed data
-    size_t cached_size;         // Decompressed size
+    uint32_t cached_size;       // Decompressed size
     uint64_t cached_index;      // Cached chunk index
     bool has_cache;             // Whether cache is valid
 };

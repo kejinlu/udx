@@ -98,19 +98,20 @@ udx_error_t udx_db_builder_finish(udx_db_builder *builder);
  * @param builder Builder pointer
  * @param word Word string (UTF-8, will be folded for case-insensitive lookup)
  * @param data Data bytes
- * @param data_size Size of data in bytes (must not exceed UINT32_MAX)
+ * @param data_size Size of data in bytes (maximum: 4 GB, recommended: < 64 KB)
  * @return UDX_OK on success, error code on failure:
- *         UDX_ERR_INVALID_PARAM: invalid parameter
+ *         UDX_ERR_INVALID_PARAM: invalid parameter or data_size exceeds maximum
  *         UDX_ERR_CHUNK: chunk writer failed
  *         UDX_ERR_WORDS: words container failed
  *
  * @note Multiple entries can be added under the same word
  * @note The original word case is preserved
+ * @note Data sizes < 64 KB allow multiple entries to share a chunk, improving compression
  */
 udx_error_t udx_db_builder_add_entry(udx_db_builder *builder,
                            const char *word,
                            const uint8_t *data,
-                           size_t data_size);
+                           uint32_t data_size);
 
 
 #ifdef __cplusplus

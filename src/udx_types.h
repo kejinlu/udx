@@ -57,7 +57,7 @@ typedef enum {
 // Basic Types
 // ============================================================
 
-// Chunk address: 48-bit chunk_index + 16-bit offset in chunk
+// Chunk address: 48-bit chunk_index + 16-bit offset in chunk (chunk_index limited to 32 bits)
 typedef uint64_t udx_chunk_address;
 
 // Invalid address sentinel (used to indicate errors)
