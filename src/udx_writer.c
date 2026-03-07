@@ -331,7 +331,7 @@ cleanup:
 
 static bool build_bptree(udx_db_builder *db_builder) {
     size_t word_count = udx_words_count(db_builder->words);
-    // Note: validations (empty, overflow) are done in udx_db_builder_finish before calling this
+    // Note: validations (empty, overflow) are done in udx_db_builder_finalize before calling this
 
     // Calculate max_elements (GoldenDict style)
     uint32_t max_elements = (uint32_t)(sqrt((double)word_count) + 1);
@@ -575,7 +575,7 @@ error:
     return NULL;
 }
 
-udx_error_t udx_db_builder_finish(udx_db_builder *builder) {
+udx_error_t udx_db_builder_finalize(udx_db_builder *builder) {
     if (builder == NULL) {
         return UDX_ERR_INVALID_PARAM;
     }

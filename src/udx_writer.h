@@ -80,7 +80,7 @@ udx_db_builder *udx_db_builder_create_with_metadata(udx_writer *writer,
                                                     size_t metadata_size);
 
 /**
- * Finish building the database
+ * Finalize building the database
  * @param builder Builder pointer
  * @return UDX_OK on success, error code on failure:
  *         UDX_ERR_INVALID_PARAM: invalid parameter or empty database (no entries added)
@@ -91,7 +91,7 @@ udx_db_builder *udx_db_builder_create_with_metadata(udx_writer *writer,
  * @note After this call, the builder is freed and must not be used again
  * @note Empty databases (with no entries) are not allowed and will return UDX_ERR_INVALID_PARAM
  */
-udx_error_t udx_db_builder_finish(udx_db_builder *builder);
+udx_error_t udx_db_builder_finalize(udx_db_builder *builder);
 
 /**
  * Add an entry to the database

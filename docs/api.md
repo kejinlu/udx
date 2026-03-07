@@ -167,10 +167,10 @@ Add an entry to the database.
 
 ---
 
-#### `udx_db_builder_finish()`
+#### `udx_db_builder_finalize()`
 
 ```c
-udx_error_t udx_db_builder_finish(udx_db_builder *builder);
+udx_error_t udx_db_builder_finalize(udx_db_builder *builder);
 ```
 
 Finish building the database.

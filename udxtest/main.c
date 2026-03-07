@@ -107,7 +107,7 @@ static int test_write(const char *filename) {
     printf("Added 8 entries\n");
 
     // Finish english dictionary
-    int ret = udx_db_builder_finish(english);
+    int ret = udx_db_builder_finalize(english);
     if (ret != 0) {
         fprintf(stderr, "Failed to finish english dictionary: %d\n", ret);
         udx_writer_close(writer);
@@ -140,7 +140,7 @@ static int test_write(const char *filename) {
     printf("Added 5 entries\n");
 
     // Finish chinese dictionary
-    ret = udx_db_builder_finish(chinese);
+    ret = udx_db_builder_finalize(chinese);
     if (ret != 0) {
         fprintf(stderr, "Failed to finish chinese dictionary: %d\n", ret);
         udx_writer_close(writer);
@@ -372,7 +372,7 @@ static int test_large_scale(const char *filename) {
     }
 
     printf("Finishing dictionary...\n");
-    int ret = udx_db_builder_finish(builder);
+    int ret = udx_db_builder_finalize(builder);
     if (ret != 0) {
         fprintf(stderr, "Failed to finish dictionary: %d\n", ret);
         udx_writer_close(writer);
@@ -499,7 +499,7 @@ static int test_error_cases(const char *filename) {
             ret = udx_db_builder_add_entry(builder, "test", NULL, 5);
             printf("   udx_db_builder_add_entry with NULL data: %d (expected -1)\n", ret);
 
-            udx_db_builder_finish(builder);
+            udx_db_builder_finalize(builder);
         }
         udx_writer_close(writer);
     }

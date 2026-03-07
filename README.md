@@ -114,7 +114,7 @@ int main() {
     udx_db_builder_add_entry(builder, "world", (const uint8_t *)data2, size2);
 
     // Finish building the database
-    udx_db_builder_finish(builder);
+    udx_db_builder_finalize(builder);
 
     // Close the writer
     udx_writer_close(writer);
