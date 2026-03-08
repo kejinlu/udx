@@ -7,6 +7,7 @@
 **libudx** — A fast, minimal C library for reading and writing **[UDX (Universal Dictionary eXchange)](docs/format.md)** file.
 
 ```mermaid
+%%{init: {"flowchart": {"diagramPadding": 150}}}%%
 graph LR
       subgraph Writer["writer"]
           direction LR
