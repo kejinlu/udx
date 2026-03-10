@@ -25,6 +25,14 @@ libudx/
 
 ### Module Architecture Diagram
 
+The library is organized into three distinct layers:
+
+- **Public API Layer**: High-level interfaces (`udx_writer` and `udx_reader`) that provide simple, intuitive functions for creating and reading UDX files. These APIs hide implementation details and handle resource management automatically.
+
+- **Core Modules**: The foundational components that implement the UDX format specification. `udx_chunk` manages compressed data storage, `udx_words` provides ordered word container functionality during database building, and `udx_types` defines all core data structures and serialization routines.
+
+- **Utility Modules**: Supporting components that provide common functionality. The `udx_btree` module offers a dynamic B-tree implementation (courtesy of Joshua J Baker) used during the build phase, while `udx_utils` provides cross-cutting utilities like string folding for case-insensitive indexing and platform-independent I/O operations.
+
 ```mermaid
 %%{init: {"flowchart": {"diagramPadding": 150}}}%%
 graph TB
@@ -71,6 +79,14 @@ graph TB
 
 ### Write Flow
 
+The write process transforms user data into an optimized UDX file through a pipeline:
+
+1. **Writer Initiation**: `udx_writer` creates the file header and manages the overall write operation.
+2. **Database Building**: `udx_db_builder` collects entries, storing data in chunks via `udx_chunk_writer` and indexing words via `udx_words`.
+3. **Index Construction**: During the build phase, `udx_words` uses a dynamic B-tree (`udx_btree`) to efficiently collect and sort entries out-of-order.
+4. **B+ Tree Generation**: At finalization, the sorted entries are converted into a static B+ tree and written to the file for O(log n) lookup performance.
+5. **File Finalization**: Chunks, chunk table, and B+ tree index are written to disk, with back-patched headers for optimal file layout.
+
 ```mermaid
 %%{init: {"flowchart": {"diagramPadding": 150}}}%%
 graph LR
@@ -83,6 +99,14 @@ graph LR
 ```
 
 ### Read Flow
+
+The read process provides efficient access to dictionary data:
+
+1. **File Opening**: `udx_reader` parses the file header and validates the format, including checksums and version compatibility.
+2. **Database Access**: `udx_db` represents an opened dictionary within the file, providing access to metadata and index structures.
+3. **Index Lookup**: The B+ tree index enables fast O(log n) word lookups with prefix matching support, returning chunk addresses without loading data.
+4. **Data Retrieval**: When data is needed, `udx_chunk_reader` decompresses the relevant chunk on-demand and returns the full data block.
+5. **Lazy Loading**: Data is loaded only when requested, minimizing memory usage and enabling efficient random access to individual entries.
 
 ```mermaid
 %%{init: {"flowchart": {"diagramPadding": 150}}}%%
