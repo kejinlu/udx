@@ -6,7 +6,7 @@
 ## Table of Contents
 
 1. [Overview](#overview)
-2. [File Structure](#file-structure)
+2. [File Layout](#file-layout)
 3. [Main Header](#main-header)
 4. [Database Header](#database-header)
 5. [Metadata](#metadata)
@@ -38,7 +38,7 @@ All multi-byte integers are stored in **native byte order**.
 
 ---
 
-## File Structure
+## File Layout
 
 A UDX file is organized as follows:
 

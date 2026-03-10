@@ -30,7 +30,7 @@ udx_writer *udx_writer_open(const char *output_path);
 Open a new UDX file for writing.
 
 **Parameters:**
-- `output_path` - Path to the output file (will be created or truncated)
+- `output_path` - Path to the output file (will be created or overwritten)
 
 **Return:**
 - Writer pointer, or `NULL` on failure (`UDX_ERR_MEMORY`)
@@ -384,7 +384,7 @@ Look up a single word in database (index only, no data loaded).
 
 **Notes:**
 - This is faster than `udx_db_lookup` as it doesn't load data
-- Use `udx_db_get_data_by_address()` to load data for specific items
+- Use `udx_db_entry_from_index()` to load data for specific items
 
 ---
 
@@ -506,6 +506,12 @@ Get the next entry.
 
 **Return:**
 - Database entry pointer, or `NULL` when traversal is complete
+
+**Notes:**
+- The returned pointer points to internal memory managed by the iterator
+- Do NOT free the returned entry or its contents directly
+- The data is valid only until the next call to `udx_db_iter_next()` or until `udx_db_iter_destroy()` is called
+- If you need to persist the data, make a deep copy before the next iteration
 
 ---
 

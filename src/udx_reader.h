@@ -100,7 +100,7 @@ uint32_t udx_db_get_index_bptree_height(const udx_db *db);
  * @return Index entry pointer (caller must free with udx_entry_free), or NULL if not found
  *
  * @note This is faster than udx_db_lookup as it doesn't load data
- * @note Use udx_db_get_data_by_address() to load data for specific items
+ * @note Use udx_db_entry_from_index() to load data for specific items
  */
 udx_index_entry *udx_db_index_lookup(udx_db *db, const char *word);
 
