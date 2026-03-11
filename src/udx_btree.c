@@ -1280,7 +1280,7 @@ bool udx_btree_iter_seek(struct udx_btree_iter *iter, const void *key) {
         size_t i = btree_node_bsearch(iter->btree, node, key, &found);
         iter->stack[iter->nstack++] = (struct btree_iter_stack_item) {
             .node = node,
-            .index = i,
+            .index = (int)i,
         };
         if (found) {
             btree_copy_item_into(iter->btree, node, i, iter->item);
