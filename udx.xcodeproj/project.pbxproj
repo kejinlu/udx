@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		6912D5A82F4EC52B00E362CB /* liblibudx.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6912D4F72F4DA36A00E362CB /* liblibudx.a */; };
+		6912D5A82F4EC52B00E362CB /* libudx.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6912D4F72F4DA36A00E362CB /* libudx.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -33,12 +33,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		6912D4F72F4DA36A00E362CB /* liblibudx.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = liblibudx.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		6912D59C2F4EB78400E362CB /* udxtest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = udxtest; sourceTree = BUILT_PRODUCTS_DIR; };
+		6912D4F72F4DA36A00E362CB /* libudx.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libudx.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		6912D59C2F4EB78400E362CB /* udx_tests */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = udx_tests; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		6912D51D2F4DA46100E362CB /* Exceptions for "src" folder in "libudx" target */ = {
+		6912D51D2F4DA46100E362CB /* Exceptions for "src" folder in "udx" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				udx_btree.c,
@@ -56,7 +56,7 @@
 				udx_writer.c,
 				udx_writer.h,
 			);
-			target = 6912D4F62F4DA36A00E362CB /* libudx */;
+			target = 6912D4F62F4DA36A00E362CB /* udx */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
@@ -64,14 +64,14 @@
 		6912D4FE2F4DA40800E362CB /* src */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				6912D51D2F4DA46100E362CB /* Exceptions for "src" folder in "libudx" target */,
+				6912D51D2F4DA46100E362CB /* Exceptions for "src" folder in "udx" target */,
 			);
 			path = src;
 			sourceTree = "<group>";
 		};
-		6912D59D2F4EB78400E362CB /* udxtest */ = {
+		695D56CD2F61128700B63539 /* tests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = udxtest;
+			path = tests;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -88,7 +88,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6912D5A82F4EC52B00E362CB /* liblibudx.a in Frameworks */,
+				6912D5A82F4EC52B00E362CB /* libudx.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -98,9 +98,8 @@
 		6912D4EE2F4DA36A00E362CB = {
 			isa = PBXGroup;
 			children = (
+				695D56CD2F61128700B63539 /* tests */,
 				6912D4FE2F4DA40800E362CB /* src */,
-				6912D59D2F4EB78400E362CB /* udxtest */,
-				6912D5A72F4EC52B00E362CB /* Frameworks */,
 				6912D4F82F4DA36A00E362CB /* Products */,
 			);
 			sourceTree = "<group>";
@@ -108,17 +107,10 @@
 		6912D4F82F4DA36A00E362CB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				6912D4F72F4DA36A00E362CB /* liblibudx.a */,
-				6912D59C2F4EB78400E362CB /* udxtest */,
+				6912D4F72F4DA36A00E362CB /* libudx.a */,
+				6912D59C2F4EB78400E362CB /* udx_tests */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		6912D5A72F4EC52B00E362CB /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -134,9 +126,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		6912D4F62F4DA36A00E362CB /* libudx */ = {
+		6912D4F62F4DA36A00E362CB /* udx */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 6912D4FB2F4DA36A00E362CB /* Build configuration list for PBXNativeTarget "libudx" */;
+			buildConfigurationList = 6912D4FB2F4DA36A00E362CB /* Build configuration list for PBXNativeTarget "udx" */;
 			buildPhases = (
 				6912D4F32F4DA36A00E362CB /* Headers */,
 				6912D4F42F4DA36A00E362CB /* Sources */,
@@ -146,16 +138,16 @@
 			);
 			dependencies = (
 			);
-			name = libudx;
+			name = udx;
 			packageProductDependencies = (
 			);
 			productName = libudx;
-			productReference = 6912D4F72F4DA36A00E362CB /* liblibudx.a */;
+			productReference = 6912D4F72F4DA36A00E362CB /* libudx.a */;
 			productType = "com.apple.product-type.library.static";
 		};
-		6912D59B2F4EB78400E362CB /* udxtest */ = {
+		6912D59B2F4EB78400E362CB /* udx_tests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 6912D5A02F4EB78400E362CB /* Build configuration list for PBXNativeTarget "udxtest" */;
+			buildConfigurationList = 6912D5A02F4EB78400E362CB /* Build configuration list for PBXNativeTarget "udx_tests" */;
 			buildPhases = (
 				6912D5982F4EB78400E362CB /* Sources */,
 				6912D5992F4EB78400E362CB /* Frameworks */,
@@ -167,13 +159,13 @@
 				6912D5A42F4EB79400E362CB /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				6912D59D2F4EB78400E362CB /* udxtest */,
+				695D56CD2F61128700B63539 /* tests */,
 			);
-			name = udxtest;
+			name = udx_tests;
 			packageProductDependencies = (
 			);
 			productName = udxtest;
-			productReference = 6912D59C2F4EB78400E362CB /* udxtest */;
+			productReference = 6912D59C2F4EB78400E362CB /* udx_tests */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
@@ -193,7 +185,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 6912D4F22F4DA36A00E362CB /* Build configuration list for PBXProject "libudx" */;
+			buildConfigurationList = 6912D4F22F4DA36A00E362CB /* Build configuration list for PBXProject "udx" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -207,8 +199,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				6912D4F62F4DA36A00E362CB /* libudx */,
-				6912D59B2F4EB78400E362CB /* udxtest */,
+				6912D4F62F4DA36A00E362CB /* udx */,
+				6912D59B2F4EB78400E362CB /* udx_tests */,
 			);
 		};
 /* End PBXProject section */
@@ -233,7 +225,7 @@
 /* Begin PBXTargetDependency section */
 		6912D5A42F4EB79400E362CB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 6912D4F62F4DA36A00E362CB /* libudx */;
+			target = 6912D4F62F4DA36A00E362CB /* udx */;
 			targetProxy = 6912D5A32F4EB79400E362CB /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -393,7 +385,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		6912D4F22F4DA36A00E362CB /* Build configuration list for PBXProject "libudx" */ = {
+		6912D4F22F4DA36A00E362CB /* Build configuration list for PBXProject "udx" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				6912D4F92F4DA36A00E362CB /* Debug */,
@@ -402,7 +394,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		6912D4FB2F4DA36A00E362CB /* Build configuration list for PBXNativeTarget "libudx" */ = {
+		6912D4FB2F4DA36A00E362CB /* Build configuration list for PBXNativeTarget "udx" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				6912D4FC2F4DA36A00E362CB /* Debug */,
@@ -411,7 +403,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		6912D5A02F4EB78400E362CB /* Build configuration list for PBXNativeTarget "udxtest" */ = {
+		6912D5A02F4EB78400E362CB /* Build configuration list for PBXNativeTarget "udx_tests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				6912D5A12F4EB78400E362CB /* Debug */,

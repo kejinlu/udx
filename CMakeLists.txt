@@ -41,9 +41,7 @@ endif()
 # ---------- Tests ----------
 if(UDX_BUILD_TESTS)
     enable_testing()
-    add_executable(udxtest udxtest/main.c)
-    target_link_libraries(udxtest PRIVATE udx)
-    add_test(NAME udxtest COMMAND udxtest)
+    add_subdirectory(tests)
 endif()
 
 # ---------- Install ----------
